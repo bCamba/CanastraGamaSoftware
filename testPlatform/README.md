@@ -1,7 +1,7 @@
 #Test Platform
 Test platform created to simulate the ground station using an arduino nano and potentiometers.
 
-List of files:
+##Files:
 
 - testPlatform.ino  - Arduino code file
 - testPlatformCircuit.fzz - Fritzing circuit sketch
