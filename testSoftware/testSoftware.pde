@@ -7,7 +7,7 @@ Serial port;
 String msg;
 int numParam = 9; // Number of parameters to be received
 GPlot plot;
-GPointsArray points;
+GPointsArray GPS_Elev;
 ArrayList<CanSatReading> readings;
 CanSatReading receiving;
 
@@ -24,22 +24,31 @@ void setup() {
   plot.setTitleText("CanSat Sensor Readings");
   plot.getXAxis().getAxisLabel().setText("Timestamp");
   plot.getYAxis().getAxisLabel().setText("GPS Elevation");
+  
+  //Initialize array of readings
+  readings = new ArrayList<CanSatReading>();
 }
 
 void draw() {
   background(255);
-  if(receiving != null){
-  plot.addPoint(float(receiving.Timestamp),float(receiving.GPS_Elev));
-  plot.beginDraw();
-  plot.drawBackground();
-  plot.drawBox();
-  plot.drawXAxis();
-  plot.drawYAxis();
-  plot.drawTitle();
-  plot.drawGridLines(GPlot.BOTH);
-  plot.drawLines();
-  plot.drawPoints();
-  plot.endDraw();}
+  if(readings.size() > 0){
+    GPS_Elev = new GPointsArray(readings.size());
+    
+    for(CanSatReading read : readings){
+      GPS_Elev.add(float(read.Timestamp),float(read.GPS_Elev));
+    }
+    plot.beginDraw();
+    plot.drawBackground();
+    plot.drawBox();
+    plot.drawXAxis();
+    plot.drawYAxis();
+    plot.drawTitle();
+    plot.drawGridLines(GPlot.BOTH);
+    plot.drawLines();
+    plot.setPoints(GPS_Elev);
+    plot.drawPoints();
+    plot.endDraw();
+  }
   
 }
 
@@ -52,11 +61,9 @@ void serialEvent(Serial p) {
     String [] data = msg.split("\n");
     if(hasRightParameters(data)){
       receiving = new CanSatReading(data);
-      
-
-      receiving.display();
+      readings.add(receiving);
     }
-  } //<>//
+  }
 }
 
 
