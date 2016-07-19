@@ -20,7 +20,7 @@ int R_GPS_Long;
 
 void setup() {
   //Initialize Serial Connection
-  Serial.begin(9600);
+  Serial.begin(19200);
 
   //Initialize variables
   Timestamp = 0;
@@ -39,29 +39,28 @@ void loop() {
   R_GPS_Long = R_GPS_Lat; //GPS_Lat = GPS_Long for simplicity:
                           //using only 6 potentiometers.
 
-
   //Print to Serial
-  printLabel("Timestamp: ",Timestamp);
-  printLabel("TeamID: ",TeamID);
-  printLabel("External Temperature: ", R_Temp_Ext);
-  printLabel("Internal Temperature ", R_Temp_Int);
-  printLabel("External Luminosity ", R_Lum_Ext);
-  printLabel("External Pressure ", R_Press_Ext);
-  printLabel("External Luminosity ", R_Lum_Ext);
-  printLabel("GPS Latitude: ", R_GPS_Lat);
-  printLabel("GPS Longitude: ", R_GPS_Long);
-  printLabel("GPS Elevation: ", R_GPS_Elev);
-  Serial.println();
+    Serial.println('#');
+    printLabel("Timestamp: ", Timestamp);
+    printLabel("TeamID: ", TeamID);
+    printLabel("External Temperature: ", R_Temp_Ext);
+    printLabel("Internal Temperature: ", R_Temp_Int);
+    printLabel("External Luminosity: ", R_Lum_Ext);
+    printLabel("External Pressure: ", R_Press_Ext);
+    printLabel("GPS Latitude: ", R_GPS_Lat);
+    printLabel("GPS Longitude: ", R_GPS_Long);
+    printLabel("GPS Elevation: ", R_GPS_Elev);
+    //Serial.println();
 
   //Update fake timestamp
-  Timestamp++;
+  Timestamp = Timestamp + 1;
+  delay(100);
 }
 
 
 //Function to print the Label followed by the sensor value
 //in the same line.
-void printLabel(char Label[],int Sensor) {
-  String print = String(Label);
-  print += Sensor;
-  Serial.println(print);
+void printLabel(String Label,int Sensor) {
+  Label += Sensor;
+  Serial.println(Label);
 }
